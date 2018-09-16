@@ -1,16 +1,17 @@
 import React from 'react';
-import { render } from 'react-dom';
 import {Subject} from 'rxjs';
 import {Dashboard} from "./dashboard.component";
 import { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-15';
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
+configure({ adapter: new Adapter() });
 describe('Dashboard Component', function () {
     let mockDashboard$;
     let sut;
     beforeEach(function () {
-       sut = <Dashboard dashboard$={mockDashboard$}/>;
-       mockDashboard$ = new Subject();
+        mockDashboard$ = new Subject();
+        sut = <Dashboard dashboard$={mockDashboard$}/>;
     });
 
     it('should render with empty state', function () {
@@ -19,5 +20,18 @@ describe('Dashboard Component', function () {
             pressure: '--',
             humidity: '--'
         });
+    });
+
+    it('should update the state when dashboard emits', function () {
+        const newState = {
+            temperature: 1,
+            humidity: 2,
+            pressure: 3
+        };
+
+        const wrapper = shallow(sut);
+        mockDashboard$.next(newState);
+        wrapper.update();
+        expect(wrapper.state()).toEqual(newState);
     });
 });

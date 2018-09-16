@@ -17,7 +17,6 @@ describe('Sensor Mock', function () {
         it.only('should NOT emit a value too early', () => {
             const subscriber = jest.fn();
             sut.subscribe(subscriber);
-            console.log(jest);
             jest.advanceTimersByTime(minDelay - 1);
 
             expect(subscriber).not.toBeCalled();

@@ -16,7 +16,6 @@ export class Dashboard extends React.Component {
         this.props.dashboard$
             .takeUntil(this.destroyed$)
             .subscribe(newState => {
-                console.log(newState);
                 this.setState(newState);
         }   );
     }
